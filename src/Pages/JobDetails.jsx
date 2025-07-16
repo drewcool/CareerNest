@@ -19,7 +19,7 @@ export default function JobDetails() {
     const urlParams = new URLSearchParams(window.location.search);
     const jobId = urlParams.get("id");
     const shouldShowForm = urlParams.get("apply") === "true";
-    
+
     if (jobId) {
       loadJob(jobId);
       if (shouldShowForm) {
@@ -28,26 +28,23 @@ export default function JobDetails() {
     }
   }, []);
 
-const loadJob = async (jobId) => {
-  try {
-    const response = await fetch(
-      `https://app.base44.com/api/apps/687508e8c02e10285e949016/entities/Job/${jobId}`,
-      {
+  const loadJob = async (jobId) => {
+    try {
+      const response = await fetch(`https://app.base44.com/api/apps/687508e8c02e10285e949016/entities/Job/${jobId}`, {
         headers: {
-          'api_key': 'fc6a61ef692346c9b3d1d0749378bd8e',
-          'Content-Type': 'application/json',
+          api_key: "fc6a61ef692346c9b3d1d0749378bd8e",
+          "Content-Type": "application/json",
         },
-      }
-    );
-    const data = await response.json();
-    console.log("Loaded job:", data);
-    setJob(data); // ✅ directly set the job object
-  } catch (error) {
-    console.error("Error loading job:", error);
-  } finally {
-    setIsLoading(false);
-  }
-};
+      });
+      const data = await response.json();
+      console.log("Loaded job:", data);
+      setJob(data); // ✅ directly set the job object
+    } catch (error) {
+      console.error("Error loading job:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const formatSalary = (min, max) => {
     if (!min && !max) return "Salary not disclosed";
     if (min && max) {
@@ -67,9 +64,7 @@ const loadJob = async (jobId) => {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Job Not Found</h2>
           <p className="text-gray-600 mb-6">The job you're looking for doesn't exist or has been removed.</p>
           <Link to={createPageUrl("Jobs")}>
-            <Button className="bg-blue-600 hover:bg-blue-700">
-              Browse All Jobs
-            </Button>
+            <Button className="bg-blue-600 hover:bg-blue-700">Browse All Jobs</Button>
           </Link>
         </div>
       </div>
@@ -90,13 +85,13 @@ const loadJob = async (jobId) => {
               <span>Back to Job Details</span>
             </Button>
           </div>
-          
+
           {applicationMessage && (
             <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
               {applicationMessage}
             </div>
           )}
-          
+
           <ApplicationForm
             job={job}
             onClose={() => setShowApplicationForm(false)}
@@ -122,10 +117,7 @@ const loadJob = async (jobId) => {
                 <span>Back to Jobs</span>
               </Button>
             </Link>
-            <Button
-              onClick={() => setShowApplicationForm(true)}
-              className="bg-blue-600 hover:bg-blue-700 px-8 py-3"
-            >
+            <Button onClick={() => setShowApplicationForm(true)} className="bg-blue-600 hover:bg-blue-700 px-8 py-3">
               Apply Now
             </Button>
           </div>
@@ -141,16 +133,10 @@ const loadJob = async (jobId) => {
               <CardContent className="p-6">
                 <div className="flex items-start space-x-4 mb-6">
                   {job.company_logo && (
-                    <img
-                      src={job.company_logo}
-                      alt={job.company}
-                      className="w-16 h-16 rounded-xl object-cover"
-                    />
+                    <img src={job.company_logo} alt={job.company} className="w-16 h-16 rounded-xl object-cover" />
                   )}
                   <div className="flex-1">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                      {job.title}
-                    </h1>
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{job.title}</h1>
                     <div className="flex items-center space-x-2 text-lg text-gray-600 mb-4">
                       <Building className="w-5 h-5" />
                       <span className="font-medium">{job.company}</span>
@@ -173,19 +159,14 @@ const loadJob = async (jobId) => {
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-6">
-                  <Badge className="bg-blue-100 text-blue-800">
-                    {job.experience_level}
-                  </Badge>
-                  {job.remote_option && (
-                    <Badge className="bg-green-100 text-green-800">
-                      Remote Available
-                    </Badge>
-                  )}
-                  {job.skills && job.skills.slice(0, 5).map((skill, index) => (
-                    <Badge key={index} variant="outline" className="text-blue-600 border-blue-600">
-                      {skill}
-                    </Badge>
-                  ))}
+                  <Badge className="bg-blue-100 text-blue-800">{job.experience_level}</Badge>
+                  {job.remote_option && <Badge className="bg-green-100 text-green-800">Remote Available</Badge>}
+                  {job.skills &&
+                    job.skills.slice(0, 5).map((skill, index) => (
+                      <Badge key={index} variant="outline" className="text-blue-600 border-blue-600">
+                        {skill}
+                      </Badge>
+                    ))}
                 </div>
 
                 <Button
@@ -204,9 +185,7 @@ const loadJob = async (jobId) => {
               </CardHeader>
               <CardContent>
                 <div className="prose max-w-none">
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {job.description}
-                  </p>
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">{job.description}</p>
                 </div>
               </CardContent>
             </Card>
@@ -323,4 +302,4 @@ const loadJob = async (jobId) => {
       </div>
     </div>
   );
-}          
+}

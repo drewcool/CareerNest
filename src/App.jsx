@@ -10,9 +10,13 @@ import JobDetails from "./Pages/JobDetails";
 import StudentAuth from "./Pages/StudentAuth";
 import RecruiterAuth from "./Pages/RecruiterAuth";
 import RecruiterDashboard from "./Pages/RecruiterDashboard";
-
-
-
+import StudentDashboard from "./Pages/StudentDashboard";
+import StudentLayout from "./StudentLAyout";
+import ResumeBuilder from "./Pages/ResumeBuilder";
+import UpdateProfile from "./Pages/UpdateProfile";
+import UploadResume from "./Pages/UploadResume";
+import MyApplicationCard from "./Components/jobs/MyApplicationCard";
+import MyApplications from "./Pages/MyApplications";
 
 export default function App() {
   return (
@@ -50,7 +54,7 @@ export default function App() {
             </Layout>
           }
         />
-         <Route
+        <Route
           path="/p/job-details"
           element={
             <Layout currentPageName="JobDetails">
@@ -83,6 +87,70 @@ export default function App() {
           }
         />
         <Route
+          path="/p/studentdashboard"
+          element={
+            <StudentLayout currentPageName="StudentDashboard">
+              <StudentDashboard />
+            </StudentLayout>
+          }
+        />
+        <Route
+          path="/p/editresume"
+          element={
+            <StudentLayout currentPageName="StudentDashboard">
+              <ResumeBuilder />
+            </StudentLayout>
+          }
+        />
+        <Route
+          path="/p/updateprofile"
+          element={
+            <StudentLayout>
+              <UpdateProfile />
+            </StudentLayout>
+          }
+        />
+        <Route
+          path="/p/help"
+          element={
+            <StudentLayout currentPageName="FAQ">
+              <FAQ />
+            </StudentLayout>
+          }
+        />
+        <Route
+          path="/p/uploadresume"
+          element={
+            <StudentLayout>
+              <UploadResume />
+            </StudentLayout>
+          }
+        />
+        <Route
+          path="/p/internship"
+          element={
+            <StudentLayout>
+              <Internships />
+            </StudentLayout>
+          }
+        />
+        <Route
+          path="/p/FAQs"
+          element={
+            <StudentLayout>
+              <FAQ />
+            </StudentLayout>
+          }
+        />
+        <Route
+          path="/p/applications"
+          element={
+            <StudentLayout>
+              <MyApplications />
+            </StudentLayout>
+          }
+        />
+        <Route
           path="/p/recruiterauth"
           element={
             <Layout currentPageName="RecruiterAuth">
@@ -112,7 +180,3 @@ export default function App() {
     </Router>
   );
 }
-
-
-
-
