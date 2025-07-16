@@ -1,44 +1,102 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ExternalLink, Calendar } from "lucide-react";
+
+const getStatusColor = (status) => {
+  switch (status) {
+    case "pending":
+      return "bg-yellow-100 text-yellow-800";
+    case "reviewed":
+      return "bg-blue-100 text-blue-800";
+    case "shortlisted":
+      return "bg-purple-100 text-purple-800";
+    case "rejected":
+      return "bg-red-100 text-red-800";
+    case "hired":
+      return "bg-green-100 text-green-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
+const formatDate = (isoDate) => {
+  const date = new Date(isoDate);
+  return date.toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
 
 export default function MyApplicationCard({ app }) {
   return (
-    <Card key={app.id} className="shadow-sm">
-      <CardHeader className="flex items-center gap-4">
-        <img
-          src={app.company_logo || "/default-logo.png"}
-          alt={app.company_name || "Company"}
-          className="w-12 h-12 object-cover rounded-md"
-        />
-        <div>
-          <CardTitle className="text-base">{app.company_name || "Company Name"}</CardTitle>
-          <p className="text-sm text-muted-foreground">Job ID: {app.job_id}</p>
+    <Card key={app.id} className="shadow-md border border-gray-200">
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <img
+            src={app.company_logo || "/vite.svg"}
+            alt="Company Logo"
+            className="w-14 h-14 object-cover rounded-md border"
+          />
+          <div>
+            <CardTitle className="text-lg font-semibold text-blue-900">{app.company_name || "Company Name"}</CardTitle>
+            <p className="text-sm text-muted-foreground">Job ID: {app.job_id}</p>
+            {app.created_date && (
+              <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                <Calendar className="w-4 h-4" /> Applied on: {formatDate(app.created_date)}
+              </p>
+            )}
+          </div>
         </div>
-        <Badge variant="outline" className="ml-auto capitalize">
-          {app.status}
-        </Badge>
+
+        <div className="sm:ml-auto">
+          <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(app.status)}`}>
+            {app.status}
+          </span>
+        </div>
       </CardHeader>
 
-      <CardContent className="space-y-2">
-        <p className="text-sm text-gray-600">
-          <strong>Applicant:</strong> {app.applicant_name} ({app.applicant_email})
-        </p>
-        <p className="text-sm text-gray-600">
-          <strong>Phone:</strong> {app.phone} | <strong>Experience:</strong> {app.experience} yrs
-        </p>
-        <p className="text-sm mt-2">
-          <strong>Cover Letter:</strong>
-        </p>
-        <p className="text-sm text-gray-700 whitespace-pre-line">{app.cover_letter}</p>
-        {app.resume_url && (
+      <CardContent className="space-y-3 text-sm text-gray-700">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <p>
+            <strong>Applicant:</strong> {app.applicant_name}
+          </p>
+          <p>
+            <strong>Email:</strong> {app.applicant_email}
+          </p>
+          {app.phone && (
+            <p>
+              <strong>Phone:</strong> {app.phone}
+            </p>
+          )}
+          {app.experience && (
+            <p>
+              <strong>Experience:</strong> {app.experience} yrs
+            </p>
+          )}
+        </div>
+
+        {app.cover_letter && (
+          <div>
+            <p className="text-sm font-medium text-gray-800 mt-2 mb-1">Cover Letter:</p>
+            <p className="whitespace-pre-line border-l-4 pl-3 border-blue-200 italic text-gray-600 bg-blue-50 rounded-md py-2">
+              {app.cover_letter}
+            </p>
+          </div>
+        )}
+
+        {app.resume_url ? (
           <a
             href={app.resume_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 text-sm underline"
+            className="inline-flex items-center text-blue-600 font-medium hover:underline mt-3"
           >
+            <ExternalLink className="w-4 h-4 mr-1" />
             View Resume
           </a>
+        ) : (
+          <p className="text-sm text-gray-500 italic">No resume uploaded.</p>
         )}
       </CardContent>
     </Card>

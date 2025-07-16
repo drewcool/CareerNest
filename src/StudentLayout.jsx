@@ -17,7 +17,7 @@ export default function StudentLayout({ children }) {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/login");
+    navigate("/p/home");
   };
 
   const goToNotifications = () => {
@@ -28,8 +28,9 @@ export default function StudentLayout({ children }) {
     { name: "Dashboard", href: createPageUrl("studentdashboard") },
     { name: "Resume", href: createPageUrl("editResume") },
     { name: "Internships", href: createPageUrl("Internship") },
-    { name: "My Applications", href: createPageUrl("My Applications") },
-    { name: "FAQs", href: createPageUrl("FAQ") },
+    { name: "My Applications", href: createPageUrl("applications") },
+    { name: "FAQs", href: createPageUrl("FAQs") },
+    { name: "Logout", href: "#", onClick: handleLogout },
   ];
 
   const isActive = (href) => location.pathname === href;
@@ -95,12 +96,18 @@ export default function StudentLayout({ children }) {
                 <Link
                   key={item.name}
                   to={item.href}
+                  onClick={(e) => {
+                    if (item.onClick) {
+                      e.preventDefault(); // Stop the default anchor navigation
+                      item.onClick(); // Call logout function
+                    }
+                    setMobileMenuOpen(false);
+                  }}
                   className={`block px-3 py-2 text-base font-medium transition-colors duration-200 ${
                     isActive(item.href)
                       ? "text-blue-600 bg-blue-50"
                       : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                   }`}
-                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
