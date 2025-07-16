@@ -9,6 +9,8 @@ import Internships from "./Pages/Internships";
 import JobDetails from "./Pages/JobDetails";
 import StudentAuth from "./Pages/StudentAuth";
 import RecruiterAuth from "./Pages/RecruiterAuth";
+import RecruiterDashboard from "./Pages/RecruiterDashboard";
+
 
 
 
@@ -16,6 +18,14 @@ export default function App() {
   return (
     <Router>
       <Routes>
+        <Route
+          path="/"
+          element={
+            <Layout currentPageName="Home">
+              <Home />
+            </Layout>
+          }
+        />
         <Route
           path="/p/home"
           element={
@@ -80,6 +90,15 @@ export default function App() {
             </Layout>
           }
         />
+        <Route
+          path="/p/recruiterdashboard"
+          element={
+            <Layout currentPageName="RecruiterDashboard">
+              <RecruiterDashboard />
+            </Layout>
+          }
+        />
+        
         {/* Optional: 404 page fallback */}
         <Route
           path="*"

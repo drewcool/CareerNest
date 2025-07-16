@@ -50,7 +50,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Find Your Dream Job in <span className="text-yellow-400">India</span>
+              Find Your Dream Internship and Volunteering Jobs in <span className="text-yellow-400">India</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
               Connect with top companies across Mumbai, Delhi, Bangalore, Pune, Hyderabad, and Noida
@@ -97,7 +97,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link to={createPageUrl("Internships")}>
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-200 transform hover:scale-105">
+                <Button variant="outline" className="border-white text-blue-600 hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-200 transform hover:scale-105">
                   Find Internships
                 </Button>
               </Link>
@@ -147,7 +147,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Featured Jobs
+              Featured Internships
             </h2>
             <p className="text-xl text-gray-600">
               Discover opportunities from top companies across India
@@ -181,7 +181,7 @@ export default function Home() {
                           <IndianRupee className="w-4 h-4 mr-1" />
                           {job.salary}
                         </span>
-                        <Link to={createPageUrl("Jobs")}>
+                        <Link to={createPageUrl("Internships")}>
                           <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
                             Apply Now
                           </Button>
@@ -195,9 +195,9 @@ export default function Home() {
           </div>
           
           <div className="text-center">
-            <Link to={createPageUrl("Jobs")}>
+            <Link to={createPageUrl("Internships")}>
               <Button className="bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg">
-                View All Jobs
+                View All Internships
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
@@ -251,7 +251,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link to={createPageUrl("RecruiterAuth")}>
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-200 transform hover:scale-105">
+                <Button variant="outline" className="border-white text-blue-600 hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-200 transform hover:scale-105">
                   Recruiter
                 </Button>
               </Link>

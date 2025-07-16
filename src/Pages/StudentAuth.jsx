@@ -1,21 +1,28 @@
+
+
 import React, { useState } from "react";
 // import { User } from "@/entities/User";
 import { Link } from "react-router-dom";
-// import { createPageUrl } from "@/utils";
+import { createPageUrl } from "../Components/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { GraduationCap, Mail, User as UserIcon, Phone, MapPin, BookOpen, Upload } from "lucide-react";
+import { GraduationCap, Mail, User as UserIcon, Phone, MapPin, BookOpen, Upload, Eye, EyeOff, AlertCircle } from "lucide-react";
 
 export default function StudentAuth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [authMethod, setAuthMethod] = useState("email"); // "email" or "phone"
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
     phone: "",
+    password: "",
+    confirm_password: "",
     location: "",
     education_level: "",
     field_of_study: "",
@@ -31,6 +38,7 @@ export default function StudentAuth() {
       ...formData,
       [e.target.name]: e.target.value
     });
+    setError("");
   };
 
   const handleSelectChange = (name, value) => {
@@ -40,12 +48,62 @@ export default function StudentAuth() {
     });
   };
 
-  const handleLogin = async () => {
+  const handleGoogleLogin = async () => {
     setIsLoading(true);
+    setError("");
     try {
       await User.login();
+      // Redirect to home or dashboard after successful login
+      window.location.href = createPageUrl("Home");
     } catch (error) {
-      console.error("Login error:", error);
+      setError("Google login failed. Please try again.");
+      console.error("Google login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEmailLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      // Simulate email/password login
+      if (!formData.email || !formData.password) {
+        setError("Please fill in all required fields");
+        return;
+      }
+      
+      // In a real app, this would validate against your auth system
+      // For demo purposes, we'll use Google login
+      await User.login();
+      window.location.href = createPageUrl("Home");
+    } catch (error) {
+      setError("Invalid email or password");
+      console.error("Email login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePhoneLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      if (!formData.phone) {
+        setError("Please enter your phone number");
+        return;
+      }
+      
+      // Simulate phone login
+      await User.login();
+      window.location.href = createPageUrl("Home");
+    } catch (error) {
+      setError("Phone login failed. Please try again.");
+      console.error("Phone login error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -54,7 +112,19 @@ export default function StudentAuth() {
   const handleSignUp = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
+    
     try {
+      if (!formData.full_name || !formData.email) {
+        setError("Please fill in all required fields");
+        return;
+      }
+      
+      if (formData.password !== formData.confirm_password) {
+        setError("Passwords do not match");
+        return;
+      }
+      
       // First login with Google
       await User.login();
       // Then update profile with additional data
@@ -62,11 +132,19 @@ export default function StudentAuth() {
         ...formData,
         user_type: "student"
       });
+      window.location.href = createPageUrl("Home");
     } catch (error) {
+      setError("Sign up failed. Please try again.");
       console.error("Sign up error:", error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleForgotPassword = () => {
+    setError("");
+    // In a real app, this would send a reset email
+    alert("Password reset instructions would be sent to your email");
   };
 
   return (
@@ -112,19 +190,126 @@ export default function StudentAuth() {
           </CardHeader>
           
           <CardContent>
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg flex items-center">
+                <AlertCircle className="w-4 h-4 mr-2" />
+                {error}
+              </div>
+            )}
+
             {isLogin ? (
               <div className="space-y-6">
+                {/* Google Login */}
                 <div className="text-center">
-                  <p className="text-gray-600 mb-6">
-                    Sign in with your Google account to access your CareerNest profile
-                  </p>
                   <Button 
-                    onClick={handleLogin}
+                    onClick={handleGoogleLogin}
                     disabled={isLoading}
-                    className="w-full bg-blue-600 hover:bg-blue-700 py-3 text-lg"
+                    className="w-full bg-red-600 hover:bg-red-700 py-3 text-lg mb-4"
                   >
-                    {isLoading ? "Signing In..." : "Sign In with Google"}
+                    {isLoading ? "Signing In..." : "Continue with Google"}
                   </Button>
+                </div>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300" />
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-gray-500">Or sign in with</span>
+                  </div>
+                </div>
+
+                {/* Auth Method Selection */}
+                <div className="flex justify-center space-x-4 mb-4">
+                  <button
+                    onClick={() => setAuthMethod("email")}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      authMethod === "email" ? "bg-blue-600 text-white" : "text-gray-600 hover:text-blue-600"
+                    }`}
+                  >
+                    Email
+                  </button>
+                  <button
+                    onClick={() => setAuthMethod("phone")}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      authMethod === "phone" ? "bg-blue-600 text-white" : "text-gray-600 hover:text-blue-600"
+                    }`}
+                  >
+                    Phone
+                  </button>
+                </div>
+
+                {/* Email Login Form */}
+                {authMethod === "email" && (
+                  <form onSubmit={handleEmailLogin} className="space-y-4">
+                    <div>
+                      <Input
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="Enter your email"
+                        required
+                      />
+                    </div>
+                    <div className="relative">
+                      <Input
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        placeholder="Enter your password"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    <Button 
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-full bg-blue-600 hover:bg-blue-700 py-3"
+                    >
+                      {isLoading ? "Signing In..." : "Sign In"}
+                    </Button>
+                  </form>
+                )}
+
+                {/* Phone Login Form */}
+                {authMethod === "phone" && (
+                  <form onSubmit={handlePhoneLogin} className="space-y-4">
+                    <div>
+                      <Input
+                        name="phone"
+                        type="tel"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        placeholder="+91 9876543210"
+                        required
+                      />
+                    </div>
+                    <Button 
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-full bg-blue-600 hover:bg-blue-700 py-3"
+                    >
+                      {isLoading ? "Sending OTP..." : "Send OTP"}
+                    </Button>
+                  </form>
+                )}
+
+                {/* Forgot Password */}
+                <div className="text-center">
+                  <button
+                    onClick={handleForgotPassword}
+                    className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                  >
+                    Forgot your password?
+                  </button>
                 </div>
                 
                 <div className="text-center pt-6 border-t">
@@ -175,13 +360,14 @@ export default function StudentAuth() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone Number
+                        Phone Number *
                       </label>
                       <Input
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
                         placeholder="+91 9876543210"
+                        required
                       />
                     </div>
                     <div>
@@ -201,6 +387,50 @@ export default function StudentAuth() {
                           <SelectItem value="Noida">Noida</SelectItem>
                         </SelectContent>
                       </Select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Password Fields */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Account Security
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Password *
+                      </label>
+                      <div className="relative">
+                        <Input
+                          name="password"
+                          type={showPassword ? "text" : "password"}
+                          value={formData.password}
+                          onChange={handleInputChange}
+                          placeholder="Enter password"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Confirm Password *
+                      </label>
+                      <Input
+                        name="confirm_password"
+                        type={showPassword ? "text" : "password"}
+                        value={formData.confirm_password}
+                        onChange={handleInputChange}
+                        placeholder="Confirm password"
+                        required
+                      />
                     </div>
                   </div>
                 </div>

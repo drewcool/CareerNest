@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, MapPin, Briefcase, Clock, IndianRupee, Filter, Building } from "lucide-react";
+import { Search, MapPin, Briefcase, Clock, IndianRupee, Filter, Building, GraduationCap, Calendar } from "lucide-react";
 import JobCard from "../Components/jobs/JobCard";
 import LoadingSpinner from "../Components/common/LoadingSpinner";
 
@@ -85,11 +85,25 @@ export default function Jobs() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-3xl md:text-5xl font-bold mb-4">
-              Find Your Perfect Job
+              Find Your Perfect Volunteer Jobs
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Discover {jobs.length}+ opportunities across India's top cities
+              Currently {jobs.length}+ opportunities available
             </p>
+             <div className="flex items-center justify-center space-x-6 text-green-100">
+              <div className="flex items-center space-x-2">
+                <GraduationCap className="w-5 h-5" />
+                <span>Student Friendly</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Calendar className="w-5 h-5" />
+                <span>Flexible Duration</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <IndianRupee className="w-5 h-5" />
+                <span>Paid Opportunities</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

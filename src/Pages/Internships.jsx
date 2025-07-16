@@ -76,7 +76,7 @@ export default function Internships() {
               Start Your Career Journey
             </h1>
             <p className="text-xl text-green-100 mb-8">
-              Discover {internships.length}+ internship opportunities across India
+              Currently {internships.length}+ internship opportunities available
             </p>
             <div className="flex items-center justify-center space-x-6 text-green-100">
               <div className="flex items-center space-x-2">
