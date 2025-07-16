@@ -103,7 +103,7 @@ export default function StudentDashboard() {
           {/* Settings - Converted to Dialog */}
           <SettingsDialog />
 
-          <Link
+          {/* <Link
             to="/p/help"
             className="block bg-white hover:bg-blue-100 p-4 rounded-xl border-l-4 border-blue-500 shadow-sm"
           >
@@ -114,7 +114,7 @@ export default function StudentDashboard() {
                 <p className="text-xs font-normal text-gray-500">Get support and answers to your questions</p>
               </div>
             </div>
-          </Link>
+          </Link> */}
         </nav>
       </aside>
 
