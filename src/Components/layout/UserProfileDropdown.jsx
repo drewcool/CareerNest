@@ -3,25 +3,15 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { Button } from "@/components/ui/button";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { 
-  User as UserIcon, 
-  Settings, 
-  HelpCircle, 
-  Mail, 
-  Shield, 
-  Key, 
-  Trash2, 
-  LogOut,
-  ChevronDown 
-} from "lucide-react";
+import { User as UserIcon, Settings, HelpCircle, Mail, Shield, Key, Trash2, LogOut, ChevronDown } from "lucide-react";
 
 export default function UserProfileDropdown({ user, onLogout }) {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -70,7 +60,12 @@ export default function UserProfileDropdown({ user, onLogout }) {
 
   const getUserInitials = (name) => {
     if (!name) return "U";
-    return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
   };
 
   const isStudent = user.user_type === "student";
@@ -81,7 +76,7 @@ export default function UserProfileDropdown({ user, onLogout }) {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="flex items-center space-x-2 p-2">
           <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-            {getUserInitials(user.full_name)}
+            {getUserInitials(user.full_name)}dwdwd
           </div>
           <div className="hidden md:flex flex-col items-start">
             <span className="text-sm font-medium text-gray-900">{user.full_name || "User"}</span>
@@ -90,7 +85,7 @@ export default function UserProfileDropdown({ user, onLogout }) {
           <ChevronDown className="w-4 h-4 text-gray-400" />
         </Button>
       </DropdownMenuTrigger>
-      
+
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
@@ -98,64 +93,59 @@ export default function UserProfileDropdown({ user, onLogout }) {
             <p className="text-xs text-gray-500">{user.email}</p>
           </div>
         </DropdownMenuLabel>
-        
+
         <DropdownMenuSeparator />
-        
+
         <DropdownMenuItem asChild>
-          <Link to={createPageUrl(isRecruiter ? "RecruiterDashboard" : "StudentDashboard")} className="flex items-center">
+          <Link
+            to={createPageUrl(isRecruiter ? "RecruiterDashboard" : "StudentDashboard")}
+            className="flex items-center"
+          >
             <UserIcon className="w-4 h-4 mr-2" />
             Your Profile
           </Link>
         </DropdownMenuItem>
-        
+
         <DropdownMenuSeparator />
-        
-        <DropdownMenuLabel className="text-xs text-gray-500 font-normal">
-          SUPPORT
-        </DropdownMenuLabel>
-        
+
+        <DropdownMenuLabel className="text-xs text-gray-500 font-normal">SUPPORT</DropdownMenuLabel>
+
         <DropdownMenuItem asChild>
           <Link to={createPageUrl("FAQ")} className="flex items-center">
             <HelpCircle className="w-4 h-4 mr-2" />
             Help Center
           </Link>
         </DropdownMenuItem>
-        
+
         <DropdownMenuItem asChild>
           <a href="mailto:support@careernest.in" className="flex items-center">
             <Mail className="w-4 h-4 mr-2" />
             Contact Us
           </a>
         </DropdownMenuItem>
-        
+
         <DropdownMenuSeparator />
-        
-        <DropdownMenuLabel className="text-xs text-gray-500 font-normal">
-          ACCOUNT MANAGEMENT
-        </DropdownMenuLabel>
-        
+
+        <DropdownMenuLabel className="text-xs text-gray-500 font-normal">ACCOUNT MANAGEMENT</DropdownMenuLabel>
+
         <DropdownMenuItem onClick={handleChangePassword} className="flex items-center">
           <Key className="w-4 h-4 mr-2" />
           Change Password
         </DropdownMenuItem>
-        
+
         <DropdownMenuItem onClick={handleChangeEmail} className="flex items-center">
           <Mail className="w-4 h-4 mr-2" />
           Change Email
         </DropdownMenuItem>
-        
+
         <DropdownMenuItem onClick={handleDeleteAccount} className="flex items-center text-red-600">
           <Trash2 className="w-4 h-4 mr-2" />
           Delete Account
         </DropdownMenuItem>
-        
+
         <DropdownMenuSeparator />
-        
-        <DropdownMenuItem 
-          onClick={handleLogout} 
-          disabled={isLoggingOut}
-          className="flex items-center text-red-600"
-        >
+
+        <DropdownMenuItem onClick={handleLogout} disabled={isLoggingOut} className="flex items-center text-red-600">
           <LogOut className="w-4 h-4 mr-2" />
           {isLoggingOut ? "Logging out..." : "Logout"}
         </DropdownMenuItem>

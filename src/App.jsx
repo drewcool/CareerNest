@@ -17,6 +17,7 @@ import UpdateProfile from "./Pages/UpdateProfile";
 import UploadResume from "./Pages/UploadResume";
 import MyApplicationCard from "./Components/jobs/MyApplicationCard";
 import MyApplications from "./Pages/MyApplications";
+import PostJobs from "./Pages/PostJobs";
 
 export default function App() {
   return (
@@ -166,7 +167,15 @@ export default function App() {
             </Layout>
           }
         />
-        
+        <Route
+          path="/p/post-jobs"
+          element={
+            <Layout>
+              <PostJobs />
+            </Layout>
+          }
+        />
+
         {/* Optional: 404 page fallback */}
         <Route
           path="*"

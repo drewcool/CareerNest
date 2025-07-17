@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Briefcase, Users, Eye, Edit, Trash2, Building } from "lucide-react";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import { Link } from "react-router-dom";
 
 export default function RecruiterDashboard() {
   const [user, setUser] = useState(null);
@@ -22,10 +23,10 @@ export default function RecruiterDashboard() {
     try {
       const userData = await User.me();
       setUser(userData);
-      
+
       const jobData = await Job.filter({ posted_by: userData.email });
       setJobs(jobData);
-      
+
       const applicationData = await Application.list();
       setApplications(applicationData);
     } catch (error) {
@@ -39,10 +40,8 @@ export default function RecruiterDashboard() {
     return <LoadingSpinner />;
   }
 
-  const activeJobs = jobs.filter(job => job.status === "active").length;
-  const totalApplications = applications.filter(app => 
-    jobs.some(job => job.id === app.job_id)
-  ).length;
+  const activeJobs = jobs.filter((job) => job.status === "active").length;
+  const totalApplications = applications.filter((app) => jobs.some((job) => job.id === app.job_id)).length;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -53,10 +52,12 @@ export default function RecruiterDashboard() {
             <h1 className="text-3xl font-bold text-gray-900">Recruiter Dashboard</h1>
             <p className="text-gray-600">Welcome back, {user?.full_name || "Recruiter"}!</p>
           </div>
-          <Button className="bg-indigo-600 hover:bg-indigo-700">
-            <Plus className="w-4 h-4 mr-2" />
-            Post New Job
-          </Button>
+          <Link to="/p/post-jobs">
+            <Button className="bg-blue-500 hover:bg-blue-600">
+              <Plus className="w-4 h-4 mr-2" />
+              Post New Job
+            </Button>
+          </Link>
         </div>
 
         {/* Stats Cards */}
@@ -74,7 +75,7 @@ export default function RecruiterDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
@@ -88,7 +89,7 @@ export default function RecruiterDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
@@ -116,8 +117,14 @@ export default function RecruiterDashboard() {
                   <div key={job.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div>
                       <h3 className="font-semibold text-gray-900">{job.title}</h3>
-                      <p className="text-sm text-gray-600">{job.location} • {job.job_type}</p>
-                      <Badge className={job.status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
+                      <p className="text-sm text-gray-600">
+                        {job.location} • {job.job_type}
+                      </p>
+                      <Badge
+                        className={
+                          job.status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
+                        }
+                      >
                         {job.status}
                       </Badge>
                     </div>
@@ -143,10 +150,12 @@ export default function RecruiterDashboard() {
                 <Briefcase className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-600 mb-2">No jobs posted yet</h3>
                 <p className="text-gray-500 mb-4">Start by posting your first job to attract candidates</p>
-                <Button className="bg-indigo-600 hover:bg-indigo-700">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Post Your First Job
-                </Button>
+                <Link to="/p/post-jobs">
+                  <Button className="bg-blue-500 hover:bg-blue-600">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Post Your First Job
+                  </Button>
+                </Link>
               </div>
             )}
           </CardContent>
